@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Happy Birthday ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      text-align: center;
+      font-family: Arial;
+      background: black;
+      color: white;
+      overflow: hidden;
+    }
+
+    h1 {
+      margin-top: 30px;
+      font-size: 32px;
+      color: #ff4d6d;
+      text-shadow: 0 0 15px pink;
+    }
+
+    #message {
+      font-size: 18px;
+      margin: 15px;
+      min-height: 40px;
+    }
+
+    img {
+      width: 80%;
+      max-width: 250px;
+      border-radius: 15px;
+      margin: 10px;
+      box-shadow: 0 0 15px pink;
+    }
+
+    button {
+      padding: 10px 18px;
+      margin: 8px;
+      border: none;
+      border-radius: 20px;
+      background: #ff4d6d;
+      color: white;
+      font-size: 14px;
+    }
+
+    .cake {
+      font-size: 70px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>💖 Happy Birthday My Love 💖</h1>
+
+<div id="message"></div>
+
+<img id="slideshow" src="https://via.placeholder.com/250">
+
+<br>
+
+<button onclick="playMusic()">🎵 Play</button>
+<button onclick="startTyping()">💌 Message</button>
+
+<div class="cake" onclick="cutCake()">🎂</div>
+
+<audio id="music">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3">
+</audio>
+
+<canvas id="fireworks"></canvas>
+
+<script>
+// 🎵 MUSIC
+function playMusic() {
+  document.getElementById("music").play();
+}
+
+// 💬 TYPING
+const text = "You are my happiness, my love, my everything ❤️ Happy Birthday!";
+let i = 0;
+
+function startTyping() {
+  document.getElementById("message").innerHTML = "";
+  i = 0;
+  typing();
+}
+
+function typing() {
+  if (i < text.length) {
+    document.getElementById("message").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typing, 50);
+  }
+}
+
+// 🎂 CAKE
+function cutCake() {
+  alert("🍰 Made with love ❤️");
+}
+
+// 📸 SLIDESHOW
+const images = [
+  "https://via.placeholder.com/250",
+  "https://via.placeholder.com/250/ff4d6d",
+  "https://via.placeholder.com/250/ffc0cb"
+];
+
+let index = 0;
+setInterval(() => {
+  index = (index + 1) % images.length;
+  document.getElementById("slideshow").src = images[index];
+}, 2000);
+
+// 💖 FLOATING HEARTS
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.innerHTML = "💖";
+  heart.style.position = "fixed";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.bottom = "-20px";
+
+  const size = Math.random() * 20 + 10;
+  heart.style.fontSize = size + "px";
+  heart.style.opacity = Math.random();
+
+  document.body.appendChild(heart);
+
+  let position = -20;
+  let drift = (Math.random() - 0.5) * 2;
+
+  function animate() {
+    position += 1.5;
+    heart.style.bottom = position + "px";
+    heart.style.left = `calc(${heart.style.left} + ${drift}px)`;
+    heart.style.opacity -= 0.005;
+
+    if (position < window.innerHeight && heart.style.opacity > 0) {
+      requestAnimationFrame(animate);
+    } else {
+      heart.remove();
+    }
+  }
+
+  animate();
+}
+
+setInterval(createHeart, 300);
+
+// 🎆 FIREWORKS
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+function firework() {
+  let x = Math.random() * canvas.width;
+  let y = Math.random() * canvas.height / 2;
+
+  for (let i = 0; i < 40; i++) {
+    particles.push({
+      x: x,
+      y: y,
+      dx: (Math.random() - 0.5) * 5,
+      dy: (Math.random() - 0.5) * 5,
+      life: 100
+    });
+  }
+}
+
+function animateFireworks() {
+  ctx.fillStyle = "rgba(0,0,0,0.2)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  particles.forEach((p, i) => {
+    p.x += p.dx;
+    p.y += p.dy;
+    p.life--;
+
+    ctx.fillStyle = "yellow";
+    ctx.fillRect(p.x, p.y, 2, 2);
+
+    if (p.life <= 0) particles.splice(i, 1);
+  });
+
+  requestAnimationFrame(animateFireworks);
+}
+
+setInterval(firework, 1200);
+animateFireworks();
+
+</script>
+
+</body>
+</html>
